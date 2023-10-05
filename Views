@@ -1,0 +1,72 @@
+views 
+view1:
+CREATE OR REPLACE VIEW "category_dis_over_city" AS 
+SELECT
+  category
+, state
+, city
+FROM
+  business
+GROUP BY category, state, city
+
+
+
+view2:
+CREATE OR REPLACE VIEW "count_of_checkin_gb_bi" AS 
+SELECT
+  business_id
+, COUNT(*) checkin_count
+FROM
+  "checkin"
+GROUP BY business_id
+
+
+
+view3:
+CREATE OR REPLACE VIEW "loc_wise_dis" AS 
+SELECT
+  state
+, city
+, "category"
+, COUNT(DISTINCT category) distinct_category_count
+FROM
+  business
+GROUP BY state, city, "category"
+
+
+
+view4:
+CREATE OR REPLACE VIEW "review_per_bi" AS 
+SELECT
+  business_id
+, COUNT(*) review_count_per_bi
+FROM
+  "review"
+GROUP BY business_id
+
+
+
+view5:
+CREATE OR REPLACE VIEW "segregated_senti_per_bi" AS 
+SELECT
+  business_id
+, SUM((CASE WHEN (sentiment = 'positive') THEN 1 ELSE 0 END)) positive_count
+, SUM((CASE WHEN (sentiment = 'neutral') THEN 1 ELSE 0 END)) neutral_count
+, SUM((CASE WHEN (sentiment = 'negative') THEN 1 ELSE 0 END)) negative_count
+FROM
+  "review"
+GROUP BY business_id
+
+
+
+
+view6:
+CREATE OR REPLACE VIEW "segregated_tip_senti_per_bi" AS 
+SELECT
+  business_id
+, SUM((CASE WHEN (sentiment = 'positive') THEN 1 ELSE 0 END)) positive_count
+, SUM((CASE WHEN (sentiment = 'neutral') THEN 1 ELSE 0 END)) neutral_count
+, SUM((CASE WHEN (sentiment = 'negative') THEN 1 ELSE 0 END)) negative_count
+FROM
+  "tip"
+GROUP BY business_id
